@@ -38,6 +38,7 @@ type GlobalStateKey =
 	| "lastShownAnnouncementId"
 	| "customInstructions"
 	| "alwaysAllowReadOnly"
+	| "unattendedMode"
 	| "taskHistory"
 	| "openAiBaseUrl"
 	| "openAiModelId"
@@ -383,6 +384,11 @@ export class ClaudeDevProvider implements vscode.WebviewViewProvider {
 						this.claudeDev?.updateAlwaysAllowReadOnly(message.bool ?? undefined)
 						await this.postStateToWebview()
 						break
+					case "unattendedMode":
+						await this.updateGlobalState("unattendedMode", message.bool ?? undefined)
+						this.claudeDev?.updateAlwaysAllowReadOnly(message.bool ?? undefined)
+						await this.postStateToWebview()
+						break					
 					case "askResponse":
 						this.claudeDev?.handleWebviewAskResponse(message.askResponse!, message.text, message.images)
 						break
@@ -698,6 +704,7 @@ export class ClaudeDevProvider implements vscode.WebviewViewProvider {
 			lastShownAnnouncementId,
 			customInstructions,
 			alwaysAllowReadOnly,
+			unattendedMode,
 			taskHistory,
 		] = await Promise.all([
 			this.getGlobalState("apiProvider") as Promise<ApiProvider | undefined>,
@@ -722,6 +729,7 @@ export class ClaudeDevProvider implements vscode.WebviewViewProvider {
 			this.getGlobalState("lastShownAnnouncementId") as Promise<string | undefined>,
 			this.getGlobalState("customInstructions") as Promise<string | undefined>,
 			this.getGlobalState("alwaysAllowReadOnly") as Promise<boolean | undefined>,
+			this.getGlobalState("unattendedMode") as Promise<boolean | undefined>,
 			this.getGlobalState("taskHistory") as Promise<HistoryItem[] | undefined>,
 		])
 

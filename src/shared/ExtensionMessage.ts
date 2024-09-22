@@ -19,6 +19,7 @@ export interface ExtensionState {
 	apiConfiguration?: ApiConfiguration
 	customInstructions?: string
 	alwaysAllowReadOnly?: boolean
+	unattendedMode?:boolean
 	uriScheme?: string
 	claudeMessages: ClaudeMessage[]
 	taskHistory: HistoryItem[]
