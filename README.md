@@ -1,8 +1,6 @@
 # Claude Dev
 
-<p align="center">
-  <img src="https://media.githubusercontent.com/media/saoudrizwan/claude-dev/main/demo.gif" width="100%" />
-</p>
+
 
 <p align="center">
   <a href="https://marketplace.visualstudio.com/items?itemName=saoudrizwan.claude-dev" target="_blank"><strong>Download VSCode Extension</strong></a> | <a href="https://discord.gg/claudedev" target="_blank"><strong>Join the Discord</strong></a>
