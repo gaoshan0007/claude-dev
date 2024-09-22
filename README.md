@@ -1,5 +1,7 @@
 # Claude Dev
 
+## Add feature
+- Add autonomous mode
 
 
 <p align="center">
