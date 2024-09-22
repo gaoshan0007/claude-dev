@@ -283,6 +283,7 @@ export class ClaudeDev {
 	private didEditFile: boolean = false
 	private customInstructions?: string
 	private alwaysAllowReadOnly: boolean
+	private unattendedMode: boolean
 	apiConversationHistory: Anthropic.MessageParam[] = []
 	claudeMessages: ClaudeMessage[] = []
 	private askResponse?: ClaudeAskResponse
@@ -298,6 +299,7 @@ export class ClaudeDev {
 		apiConfiguration: ApiConfiguration,
 		customInstructions?: string,
 		alwaysAllowReadOnly?: boolean,
+		unattendedMode?:boolean,
 		task?: string,
 		images?: string[],
 		historyItem?: HistoryItem
@@ -308,6 +310,7 @@ export class ClaudeDev {
 		this.urlContentFetcher = new UrlContentFetcher(provider.context)
 		this.customInstructions = customInstructions
 		this.alwaysAllowReadOnly = alwaysAllowReadOnly ?? false
+		this.unattendedMode = unattendedMode ?? false		
 
 		if (historyItem) {
 			this.taskId = historyItem.id
@@ -330,6 +333,10 @@ export class ClaudeDev {
 
 	updateAlwaysAllowReadOnly(alwaysAllowReadOnly: boolean | undefined) {
 		this.alwaysAllowReadOnly = alwaysAllowReadOnly ?? false
+	}
+
+	updateUnattendedMode(unattendedMode: boolean | undefined) {
+		this.unattendedMode = unattendedMode ?? false
 	}
 
 	async handleWebviewAskResponse(askResponse: ClaudeAskResponse, text?: string, images?: string[]) {

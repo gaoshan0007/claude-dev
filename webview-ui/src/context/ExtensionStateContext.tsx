@@ -34,6 +34,7 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 	const handleMessage = useCallback((event: MessageEvent) => {
 		const message: ExtensionMessage = event.data
 		if (message.type === "state" && message.state) {
+			console.log("Received state update:", message.state)
 			setState(message.state)
 			const config = message.state?.apiConfiguration
 			const hasKey = config
@@ -74,7 +75,11 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 		setApiConfiguration: (value) => setState((prevState) => ({ ...prevState, apiConfiguration: value })),
 		setCustomInstructions: (value) => setState((prevState) => ({ ...prevState, customInstructions: value })),
 		setAlwaysAllowReadOnly: (value) => setState((prevState) => ({ ...prevState, alwaysAllowReadOnly: value })),
-		setUnattendedMode: (value) => setState((prevState) => ({ ...prevState, alwaysAllowReadOnly: value })),
+		setUnattendedMode: (value) => {
+			console.log("Setting unattendedMode to:", value)
+			setState((prevState) => ({ ...prevState, unattendedMode: value }))
+			vscode.postMessage({ type: "unattendedMode", bool: value })
+		},
 		setShowAnnouncement: (value) => setState((prevState) => ({ ...prevState, shouldShowAnnouncement: value })),
 	}
 

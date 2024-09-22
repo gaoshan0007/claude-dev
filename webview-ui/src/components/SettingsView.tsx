@@ -34,6 +34,7 @@ const SettingsView = ({ onDone }: SettingsViewProps) => {
 			vscode.postMessage({ type: "customInstructions", text: customInstructions })
 			vscode.postMessage({ type: "alwaysAllowReadOnly", bool: alwaysAllowReadOnly })
 			vscode.postMessage({ type: "unattendedMode", bool: unattendedMode })
+			console.log("Sending unattendedMode:", unattendedMode) // 添加日志
 			onDone()
 		}
 	}
@@ -44,6 +45,12 @@ const SettingsView = ({ onDone }: SettingsViewProps) => {
 
 	const handleResetState = () => {
 		vscode.postMessage({ type: "resetState" })
+	}
+
+	const handleUnattendedModeChange = (e: any) => {
+		const newValue = e.target.checked
+		console.log("Changing unattendedMode to:", newValue) // 添加日志
+		setUnattendedMode(newValue)
 	}
 
 	return (
@@ -117,7 +124,7 @@ const SettingsView = ({ onDone }: SettingsViewProps) => {
 				<div style={{ marginBottom: 5 }}>
 					<VSCodeCheckbox
 						checked={unattendedMode}
-						onChange={(e: any) => setUnattendedMode(e.target.checked)}>
+						onChange={handleUnattendedModeChange}>
 						<span style={{ fontWeight: "500" }}>Unattended Mode</span>
 					</VSCodeCheckbox>
 					<p
@@ -127,6 +134,14 @@ const SettingsView = ({ onDone }: SettingsViewProps) => {
 							color: "var(--vscode-descriptionForeground)",
 						}}>
 						When enabled, Claude will operate without requiring user interaction or approval.
+					</p>
+					<p
+						style={{
+							fontSize: "12px",
+							marginTop: "5px",
+							color: "var(--vscode-descriptionForeground)",
+						}}>
+						Current value: {unattendedMode ? "Enabled" : "Disabled"}
 					</p>
 				</div>
 

@@ -196,8 +196,8 @@ export class ClaudeDevProvider implements vscode.WebviewViewProvider {
 
 	async initClaudeDevWithTask(task?: string, images?: string[]) {
 		await this.clearTask() // ensures that an exising task doesn't exist before starting a new one, although this shouldn't be possible since user must clear task before starting a new one
-		const { apiConfiguration, customInstructions, alwaysAllowReadOnly } = await this.getState()
-		this.claudeDev = new ClaudeDev(this, apiConfiguration, customInstructions, alwaysAllowReadOnly, task, images)
+		const { apiConfiguration, customInstructions, alwaysAllowReadOnly,unattendedMode } = await this.getState()
+		this.claudeDev = new ClaudeDev(this, apiConfiguration, customInstructions, alwaysAllowReadOnly,unattendedMode, task, images)
 	}
 
 	async initClaudeDevWithHistoryItem(historyItem: HistoryItem) {
@@ -208,6 +208,7 @@ export class ClaudeDevProvider implements vscode.WebviewViewProvider {
 			apiConfiguration,
 			customInstructions,
 			alwaysAllowReadOnly,
+			undefined,
 			undefined,
 			undefined,
 			historyItem
@@ -385,8 +386,8 @@ export class ClaudeDevProvider implements vscode.WebviewViewProvider {
 						await this.postStateToWebview()
 						break
 					case "unattendedMode":
-						await this.updateGlobalState("unattendedMode", message.bool ?? undefined)
-						this.claudeDev?.updateAlwaysAllowReadOnly(message.bool ?? undefined)
+						await this.updateGlobalState("unattendedMode", message.bool ?? undefined)						
+						this.claudeDev?.updateUnattendedMode(message.bool ?? undefined)
 						await this.postStateToWebview()
 						break					
 					case "askResponse":
@@ -772,6 +773,7 @@ export class ClaudeDevProvider implements vscode.WebviewViewProvider {
 			lastShownAnnouncementId,
 			customInstructions,
 			alwaysAllowReadOnly: alwaysAllowReadOnly ?? false,
+			unattendedMode:unattendedMode??false,
 			taskHistory,
 		}
 	}
